@@ -1,0 +1,184 @@
+.myweathercontainer {
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    border-radius: 30px !important;
+    background-image: url('http://source.unsplash.com/1600x900/?landscape');    
+    padding: 1.5rem !important;
+  }
+
+.container-model {
+    display: flex;
+    justify-content: center; /* Center the cards */
+    align-items: flex-start; /* Align items at the start */
+    gap: 20px; /* Add gap between the cards */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+
+.flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card {
+    background-color: white;
+    padding: 2em;
+    border-radius: 30px;
+    width: 100%;
+    max-width: 500px;
+}
+
+.description {
+    text-transform: capitalize;
+    text-align: center;
+    align-items: center;
+}
+
+.search {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 20px;
+}
+
+button {
+    margin: 0.5em;
+    border-radius: 50%;
+    border: none;
+    height: 44px;
+    width: 44px;
+    outline: none;
+    background: #7c7c7c2b;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+}
+
+.search-dropdown {
+    border: none;
+    outline: none;
+    padding: 0.4em 1em;
+    border-radius: 24px;
+    background: #7c7c7c2b;
+    color: black;
+    font-family: inherit;
+    font-size: 120%;
+    width: 400px;
+}
+
+input.search-bar {
+    border: none;
+    outline: none;
+    padding: 0.4em 1em;
+    border-radius: 24px;
+    background: #7c7c7c2b;
+    color: black;
+    font-family: inherit;
+    font-size: 120%;
+    width: calc(100% - 100px);
+}
+
+button:hover {
+    background: #d4d1d16b
+}
+
+.city {
+    text-align: center;
+}
+
+.humidity {
+    text-align: center;
+}
+
+.wind {
+    text-align: center;
+}
+
+.temp {
+    text-align: center;
+}
+
+.cloudiness {
+    text-align: center;
+}
+
+.pressure {
+    text-align: center;
+}
+
+.visibility {
+    text-align: center;
+}
+
+.sunrise {
+    text-align: center;
+}
+
+.sunset {
+    text-align: center;
+}
+
+.h1.temp {
+    margin: 0;
+    margin-bottom: 0.4em;
+    text-align: center;
+}
+
+.weather.loading {
+    visibility: hidden;
+    max-height: 20px;
+    position: relative;
+}
+
+.weather.loading:after {
+    visibility: visible;
+    content: "Enter a city to know about its geolocation info!";
+    font-family: 'Roboto', sans-serif;
+    color: white;
+    position: absolute;
+    top: 0;
+    left: 20px;
+}
+
+@media(max-width:912px) {
+    .card {
+        padding: 2.6em;
+        max-width: 420px;
+        margin: 2em;
+    }
+}
+
+@media(max-width:540px) {
+    .card {
+        padding: 1em;
+        max-width: 420px;
+        margin: 2em;
+    }
+}
+
+@media only screen and (min-width:395px) and (max-width:415px) {
+    .card {
+        width: 80%;
+        margin: 2em;
+    }
+}
+
+@media only screen and (min-width:281px) and (max-width:394px) {
+    .card {
+        width: 70%;
+        margin: 3.4em;
+        padding-bottom: 10px;
+        padding-left: 12px;
+        padding-top: 10px;
+    }
+}
+
+@media(max-width:280px) {
+    .card {
+        width: 64%;
+        margin: 3em;
+        padding-bottom: 22px;
+        padding-left: 22px;
+        padding-top: 17px;
+    }
+}

@@ -1,0 +1,110 @@
+#include "DHT.h"
+#include <ESP8266WiFi.h>
+#include <WiFiClient.h>
+
+// DHT sensor
+#define DHTPIN 4         // Pin connected to the DHT sensor
+#define DHTTYPE DHT22    // DHT 22 (AM2302) sensor type
+
+DHT dht(DHTPIN, DHTTYPE);
+
+// Sensors on A0
+#define MQ4PIN A0      // Pin connected to the MQ4 methane sensor
+#define MQ135PIN A0    // Pin connected to the MQ-135 CO2 sensor
+
+// WiFi credentials
+const char* ssid = "McDonald_Wifi";      // Replace with your network SSID
+const char* password = "phan010118";  // Replace with your network password
+
+// Server IP address
+const char* server = "192.168.212.249";  // Replace with your server IP
+
+WiFiClient client;
+
+void setup() {
+  Serial.begin(115200); // Initialize serial communication at 115200 baud
+  delay(10);            // Small delay to stabilize
+  dht.begin();          // Initialize the DHT sensor
+
+  // Connect to WiFi
+  Serial.println();
+  Serial.println();
+  Serial.print("Connecting to ");
+  Serial.println(ssid);
+
+  WiFi.begin(ssid, password);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("");
+  Serial.println("WiFi connected");
+  Serial.print("IP Address: ");
+  Serial.println(WiFi.localIP());
+  delay(1000);
+}
+
+void loop() {
+  float humidityData = dht.readHumidity();       // Read humidity data
+  float temperatureData = dht.readTemperature(); // Read temperature data
+
+  int methaneData = readMQ4();      // Read methane data
+  int co2Data = readMQ135();        // Read CO2 data
+
+  // Debugging: Print the sensor data to the Serial Monitor
+  Serial.print("Humidity: ");
+  Serial.println(humidityData);
+  Serial.print("Temperature: ");
+  Serial.println(temperatureData);
+  Serial.print("Methane: ");
+  Serial.println(methaneData);
+  Serial.print("Carbon Dioxide: ");
+  Serial.println(co2Data);
+
+  Sending_To_phpmyadmindatabase(humidityData, temperatureData, methaneData, co2Data);
+
+  delay(10000); // Interval between data transmissions (10 seconds)
+}
+
+int readMQ4() {
+  int value = analogRead(MQ4PIN);
+  delay(500); // Allow some time for the reading to stabilize
+  return value;
+}
+
+int readMQ135() {
+  int value = analogRead(MQ135PIN);
+  delay(500); // Allow some time for the reading to stabilize
+  return value;
+}
+
+void Sending_To_phpmyadmindatabase(float humidityData, float temperatureData, int methaneData, int co2Data) {
+  if (client.connect(server, 80)) {  // Connect to local server on port 80
+    Serial.println("Connected to local server");
+
+    // Make an HTTP GET request
+    client.print("GET /GHG_MONITORING/dht.php?humidity=");
+    client.print(humidityData);
+    client.print("&temperature=");
+    client.print(temperatureData);
+    client.print("&methane=");
+    client.print(methaneData);
+    client.print("&carbon_dioxide=");  // Use the correct column name
+    client.print(co2Data);
+    client.println(" HTTP/1.1");
+    client.print("Host: ");
+    client.println(server);
+    client.println("Connection: close");
+    client.println();
+
+    // Wait for the server to respond
+    while (client.available()) {
+      String line = client.readStringUntil('\r');
+      Serial.print(line);
+    }
+    client.stop();
+  } else {
+    Serial.println("Connection to server failed");
+  }
+}

@@ -1,0 +1,10 @@
+Admin Account:
+Login ID: 111111-11-1111
+Password: 123
+
+Student Account:
+Login ID: 111111-11-1111
+Password:123
+
+ghg.lovestoblog.com
+pass:uIdSXPlhtKAg0
